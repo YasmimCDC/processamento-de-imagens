@@ -16,7 +16,7 @@ def criar_mascara_media(k: int) -> Matriz:
 
 
 def copiar_bordas(imagem: Matriz, deltaAltura: int, deltaLargura: int):
-    for n in range(len(imagem[0])):
+    for n in range(len(imagem)):
         for k in range(deltaAltura):
             imagem[n].insert(0, imagem[n][0])
             imagem[n].insert(len(imagem[n]) - 1, imagem[n][len(imagem[n]) - 1])
@@ -24,23 +24,23 @@ def copiar_bordas(imagem: Matriz, deltaAltura: int, deltaLargura: int):
     # Duplicando pixels de cima e de baixo
     for k in range(deltaLargura):
         imagem.insert(0, imagem[0])
-        imagem.insert(len(imagem) - 1, imagem[len(imagem) - 1])
+        imagem.insert(len(imagem[0]) - 1, imagem[len(imagem[0]) - 1])
 
 
 def mediana(imagem: Matriz, altura: int, largura: int) -> Matriz:
-    alturaMascara = 7
-    deltaAltura = round((alturaMascara-1)/2)
-    med = (alturaMascara * alturaMascara)//2
+    alturaMascara = 3
+    deltaAltura = deltaLargura = round((alturaMascara-1)/2)
+    med = ((alturaMascara * alturaMascara)-1)//2
     nova_imagem = []
 
     copiar_bordas(imagem, deltaAltura, deltaAltura)
 
-    for i in range(altura):
+    for i in range(deltaAltura, len(imagem)-deltaAltura):
         linha = []
-        for j in range(largura):
+        for j in range(deltaLargura, len(imagem[0])-deltaLargura):
             aux = []
-            for n in range(-deltaAltura, deltaAltura):
-                for m in range(-deltaAltura, deltaAltura):
+            for n in range(-deltaAltura, deltaAltura+1):
+                for m in range(-deltaLargura, deltaLargura+1):
                     aux.append(imagem[i + n][j + m])
             aux.sort()
             linha.append(aux[med])
@@ -56,7 +56,7 @@ def convolucao(imagem: Matriz, mascara: Matriz) -> List:
     deltaAltura = round((alturaMascara - 1) / 2)
     deltaLargura = round((larguraMascara - 1) / 2)
 
-    # Duplicando pixels da lateral
+    # Duplicando pixels das bordas
     copiar_bordas(imagem, deltaAltura, deltaLargura)
 
     saida = []
@@ -76,13 +76,13 @@ def convolucao(imagem: Matriz, mascara: Matriz) -> List:
     return saida
 
 
-def somar_pesos(mascara: Matriz) -> int:
+def somar_pesos(mascara: Matriz) -> float:
     soma = 0
     for i in range(len(mascara)):
         for j in range(len(mascara[0])):
-            soma += mascara[i][j]*(1.0/9.0)
+            soma += mascara[i][j]
 
-    return soma
+    return soma/9
 
 
 def box_filter(imagem: Matriz, k: int):

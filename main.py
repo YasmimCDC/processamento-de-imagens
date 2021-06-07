@@ -1,4 +1,5 @@
-from tratamento_arquivo.processamento_de_arquivo import *
+from utils.menu_utils import *
+from utils.processamento_de_arquivo import *
 from filtros.filtros_simples import *
 from filtros.histogramas import *
 from filtros.mascaras import *
@@ -9,12 +10,22 @@ def main() -> None:
 
     print("Bem vindo ao editor que só faz operação pontual")
     print("===============================================")
-    print("Escolha a sua operacao:\n(1)Limiar\n(2)Negativo\n(3)Histograma\n(4)Equalizacao\n(5)Borrar\n(6)Limpar")
+    print("Escolha a sua operacao:\n(1) Limiar\n(2) Negativo\n(3) Histograma\n(4) Equalizar\n(5) Borrar\n(6) Remover "
+          "ruído")
 
     operacao = obter_inteiro()
+    valido = validar_operacao(operacao)
+
+    while not valido:
+        k = obter_inteiro()
+        if k is str:
+            return
+        valido = validar_operacao(k)
+
     caminho = obter_caminho()
 
     if caminho == "q":
+
         return
 
     imagem, altura, largura, qtd_tons, tipo_imagem = extrair_imagem(caminho)
@@ -23,7 +34,6 @@ def main() -> None:
     if operacao == 1:
         print("Forneca o limiar desejado:")
         limiar = obter_inteiro()
-
         if not limiar.isnumeric():
             return
 
@@ -33,7 +43,9 @@ def main() -> None:
         negativar(imagem, altura, largura, qtd_tons)
 
     elif operacao == 3:
-        histograma(imagem, altura, largura, qtd_tons)
+        hist = histograma(imagem, altura, largura, qtd_tons)
+        escrever_arquivo(caminho, operacoes[operacao], 'txt', hist)
+        return
 
     elif operacao == 4:
         equalizacao_histogramica(imagem, altura, largura, qtd_tons)
@@ -42,7 +54,6 @@ def main() -> None:
         print("Forneca a altura da mascara: ")
 
         k = obter_inteiro()
-
         if k is str:
             return
 
@@ -65,7 +76,7 @@ def main() -> None:
         print("Operação inválida, abortando...")
         return
 
-    escrever_imagem(caminho, str(operacao), "pgm", imagem, altura, largura, qtd_tons, tipo_imagem)
+    escrever_imagem(caminho, operacoes[operacao], "pgm", imagem, altura, largura, qtd_tons, tipo_imagem)
 
 
 if __name__ == "__main__":
