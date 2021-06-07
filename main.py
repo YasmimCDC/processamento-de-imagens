@@ -34,7 +34,7 @@ def main() -> None:
     if operacao == 1:
         print("Forneca o limiar desejado:")
         limiar = obter_inteiro()
-        if not limiar.isnumeric():
+        if limiar is str:
             return
 
         limiarizar(imagem, limiar[0], altura, largura, qtd_tons)
