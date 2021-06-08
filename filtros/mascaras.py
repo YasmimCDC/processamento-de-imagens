@@ -2,7 +2,7 @@ from filtros import *
 
 
 def validar_mascara(k: int) -> bool:
-    if k % 2 == 0:
+    if k % 2 == 0 or k <= 2:
         return False
 
     return True
@@ -16,6 +16,7 @@ def criar_mascara_media(k: int) -> Matriz:
 
 
 def copiar_bordas(imagem: Matriz, deltaAltura: int, deltaLargura: int):
+    # Duplicando pixels de lado a lado
     for n in range(len(imagem)):
         for k in range(deltaAltura):
             imagem[n].insert(0, imagem[n][0])
@@ -27,12 +28,14 @@ def copiar_bordas(imagem: Matriz, deltaAltura: int, deltaLargura: int):
         imagem.insert(len(imagem[0]) - 1, imagem[len(imagem[0]) - 1])
 
 
-def mediana(imagem: Matriz, altura: int, largura: int) -> Matriz:
-    alturaMascara = 3
+def mediana(imagem: Matriz, altura_da_mascara: int) -> Matriz:
+    print("Aplicando o filtro na imagem...")
+    alturaMascara = altura_da_mascara
     deltaAltura = deltaLargura = round((alturaMascara-1)/2)
     med = ((alturaMascara * alturaMascara)-1)//2
     nova_imagem = []
 
+    # Duplicando pixels das bordas
     copiar_bordas(imagem, deltaAltura, deltaAltura)
 
     for i in range(deltaAltura, len(imagem)-deltaAltura):
@@ -49,7 +52,7 @@ def mediana(imagem: Matriz, altura: int, largura: int) -> Matriz:
     return nova_imagem
 
 
-def convolucao(imagem: Matriz, mascara: Matriz) -> List:
+def convolucao(imagem: Matriz, mascara: Matriz) -> Matriz:
     alturaMascara = len(mascara)
     larguraMascara = len(mascara[0])
 
@@ -85,6 +88,6 @@ def somar_pesos(mascara: Matriz) -> float:
     return soma/9
 
 
-def box_filter(imagem: Matriz, k: int):
+def box_filter(imagem: Matriz, k: int) -> Matriz:
     mascara = criar_mascara_media(k)
     return convolucao(imagem, mascara)

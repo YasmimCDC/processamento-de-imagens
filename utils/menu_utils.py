@@ -1,6 +1,7 @@
 import os
 from typing import *
 
+from filtros.mascaras import validar_mascara
 
 operacoes = {
     1: "Limiar",
@@ -44,7 +45,7 @@ def obter_caminho() -> str:
     return caminho
 
 
-def obter_inteiro():
+def obter_inteiro() -> Any:
     inteiro, conseguiu = try_parse_int(input())
 
     while not conseguiu:
@@ -55,6 +56,26 @@ def obter_inteiro():
             break
 
     return inteiro
+
+
+def pegar_altura_mascara() -> Optional[int]:
+    print("Forneca a altura da mascara: ")
+
+    k = obter_inteiro()
+    if k is str:
+        return
+
+    valido = validar_mascara(k)
+
+    while not valido:
+        k = obter_inteiro()
+
+        if k is str:
+            return
+
+        valido = validar_mascara(k)
+
+    return k
 
 
 def validar_caminho(caminho: str) -> bool:

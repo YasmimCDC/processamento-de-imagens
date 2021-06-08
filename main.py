@@ -5,10 +5,10 @@ from filtros.histogramas import *
 from filtros.mascaras import *
 
 
-def main() -> None:
+def main_teste():
     clear()
 
-    print("Bem vindo ao editor que só faz operação pontual")
+    print("Bem-vindo ao editor que só faz operação pontual")
     print("===============================================")
     print("Escolha a sua operacao:\n(1) Limiar\n(2) Negativo\n(3) Histograma\n(4) Equalizar\n(5) Borrar\n(6) Remover "
           "ruído")
@@ -28,7 +28,7 @@ def main() -> None:
 
         return
 
-    imagem, altura, largura, qtd_tons, tipo_imagem = extrair_imagem(caminho)
+    imagem, altura, largura, qtd_tons, tipo_imagem = extrair_imagem_p2(caminho)
     qtd_tons = int(qtd_tons)
 
     if operacao == 1:
@@ -44,39 +44,43 @@ def main() -> None:
 
     elif operacao == 3:
         hist = histograma(imagem, altura, largura, qtd_tons)
-        escrever_arquivo(caminho, operacoes[operacao], 'txt', hist)
+        escrever_arquivo(caminho, 'txt', hist, operacoes[operacao])
         return
 
     elif operacao == 4:
         equalizacao_histogramica(imagem, altura, largura, qtd_tons)
 
     elif operacao == 5:
-        print("Forneca a altura da mascara: ")
 
-        k = obter_inteiro()
-        if k is str:
-            return
-
-        valido = validar_mascara(k)
-
-        while not valido:
-            k = obter_inteiro()
-
-            if k is str:
-                return
-
-            valido = validar_mascara(k)
-
-        imagem = box_filter(imagem, k)
+        altura_mascara = pegar_altura_mascara()
+        imagem = box_filter(imagem, altura_mascara)
 
     elif operacao == 6:
-        imagem = mediana(imagem, altura, largura)
+
+        altura_mascara = pegar_altura_mascara()
+        imagem = mediana(imagem, altura_mascara)
 
     else:
         print("Operação inválida, abortando...")
         return
 
-    escrever_imagem(caminho, operacoes[operacao], "pgm", imagem, altura, largura, qtd_tons, tipo_imagem)
+    escrever_imagem(caminho, "pgm", imagem, altura, largura, tipo_imagem, qtd_tons, operacoes[operacao])
+
+
+def main():
+    clear()
+
+    print("Bem-vindo ao editor que apenas remove ruídos de imagens")
+    print("=======================================================")
+
+    caminho = obter_caminho()
+    altura_mascara = pegar_altura_mascara()
+
+    imagem, altura, largura, tipo_imagem = extrair_imagem_p1(caminho)
+
+    imagem = mediana(imagem, altura_mascara)
+
+    escrever_imagem(caminho, "pbm", imagem, altura, largura, tipo_imagem)
 
 
 if __name__ == "__main__":
