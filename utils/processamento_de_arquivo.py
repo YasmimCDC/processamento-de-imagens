@@ -68,7 +68,7 @@ def escrever_imagem(dir: str,
     dir_escrita = definir_caminho_de_saida(dir, extensao, operacao)
     print("Criando nova imagem...")
     with open(dir_escrita, "w") as novo_arquivo:
-        novo_arquivo.write(tipo_imagem + "\n")
+        novo_arquivo.write(tipo_imagem)
         novo_arquivo.write("# Imagem processada\n")
         novo_arquivo.write(str(colunas) + " " + str(linhas) + "\n")
         if qtd_tons is not None:
@@ -89,6 +89,7 @@ def escrever_arquivo(dir: str,
     dir_escrita = definir_caminho_de_saida(dir, extensao, operacao)
 
     with open(dir_escrita, "w") as novo_arquivo:
+
         novo_arquivo.write("# Arquivo gerado para analise de operacoes\n")
 
         for x in range(len(dados)):

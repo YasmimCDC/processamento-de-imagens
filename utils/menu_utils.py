@@ -10,6 +10,7 @@ operacoes = {
     4: "Equalizar",
     5: "Borrar",
     6: "Remover_ruído",
+    7: "Dilatar"
 }
 
 
@@ -84,7 +85,7 @@ def validar_caminho(caminho: str) -> bool:
 
 
 def validar_operacao(operacao: int) -> bool:
-    op = [1, 2, 3, 4, 5, 6]
+    op = [1, 2, 3, 4, 5, 6, 7]
 
     if operacao in op:
         return True
