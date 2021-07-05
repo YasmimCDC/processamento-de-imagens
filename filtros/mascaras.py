@@ -29,7 +29,7 @@ def copiar_bordas(imagem: Matriz, deltaAltura: int, deltaLargura: int):
 
 
 def mediana(imagem: Matriz, altura_da_mascara: int) -> Matriz:
-    print("Aplicando o filtro na imagem...")
+    print("Removendo ruído da imagem...")
     alturaMascara = altura_da_mascara
     deltaAltura = deltaLargura = round((alturaMascara-1)/2)
     med = ((alturaMascara * alturaMascara)-1)//2
